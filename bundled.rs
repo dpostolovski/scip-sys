@@ -43,7 +43,7 @@ fn get_url(os: String, arch: String) -> String {
     } else if os == "windows" && arch == "x86_64" {
         "windows"
     } else if os == "linux" && arch == "aarch64" {
-        return "https://github.com/dpostolovski/scipoptsuite-deploy/releases/download/arm-test-compile/scip-arm.zip".to_string()
+        return "https://github.com/dpostolovski/scipoptsuite-deploy/releases/download/arm-test-compile/libscip-linux-arm.zip".to_string()
     }
     else {
         panic!("Unsupported OS-arch combination: {}-{}", os, arch);
