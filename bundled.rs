@@ -24,6 +24,13 @@ pub fn download_scip() {
     println!("cargo:warning=Detected OS: {}", os);
     println!("cargo:warning=Detected arch: {}", arch);
 
+    let url = get_url(os, arch);
+
+    download_and_extract_zip(&url, &extract_path)
+        .unwrap_or_else(|e| panic!("Failed to download and extract SCIP: {}", e));
+}
+
+fn get_url(os: String, arch: String) -> String {
     let os_string = if os == "linux" && arch == "x86_64" {
         "linux"
     } else if os == "macos" && arch == "x86_64" {
@@ -32,7 +39,10 @@ pub fn download_scip() {
         "macos-arm"
     } else if os == "windows" && arch == "x86_64" {
         "windows"
-    } else {
+    } else if os == "linux" && arch == "aarch64" {
+        return "https://github.com/dpostolovski/scipoptsuite-deploy/releases/download/arm-test-compile/scip-arm.zip".to_string()
+    }
+    else {
         panic!("Unsupported OS-arch combination: {}-{}", os, arch);
     };
 
@@ -45,9 +55,7 @@ pub fn download_scip() {
     let url = format!(
         "https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-{os_string}{debug_str}.zip",
     );
-
-    download_and_extract_zip(&url, &extract_path)
-        .unwrap_or_else(|e| panic!("Failed to download and extract SCIP: {}", e));
+    url
 }
 
 #[cfg(not(feature = "bundled"))]
