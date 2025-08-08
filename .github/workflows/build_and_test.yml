@@ -53,6 +53,7 @@ jobs:
           macos-14,
           ubuntu-latest,
           windows-latest,
+          ubuntu-24.04-arm
         ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -87,24 +88,3 @@ jobs:
           cargo b -vv
           cargo t create
           cargo t --examples
-
-#  from-source-linux-arm-test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Set up QEMU for ARM64 emulation
-#        uses: docker/setup-qemu-action@v2
-#        with:
-#          platforms: arm64
-#
-#      - name: Run test in ARM64 environment
-#        run: |
-#          docker run --rm --platform linux/arm64 \
-#            -v ${{ github.workspace }}:/workspace \
-#            -w /workspace \
-#            rust:latest /bin/bash -c "
-#              cargo build --features from-source -vv
-#              cargo test --features from-source create
-#              cargo test --features from-source --examples
-#            "
